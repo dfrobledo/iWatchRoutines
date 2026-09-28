@@ -1,0 +1,39 @@
+name: iWatchRoutines
+options:
+  bundleIdPrefix: com.dfrobledo
+  deploymentTarget:
+    watchOS: "10.0"
+packages:
+  RoutineKit:
+    path: RoutineKit
+targets:
+  iWatchRoutines:
+    type: application
+    platform: watchOS
+    sources:
+      - path: WatchApp/Sources
+      - path: routines/actual.json
+        buildPhase: resources
+    dependencies:
+      - package: RoutineKit
+    info:
+      path: WatchApp/Supporting/Info.plist
+      properties:
+        CFBundleDisplayName: Rutinas
+        WKApplication: true
+        WKWatchOnly: true
+        WKBackgroundModes: [workout-processing]
+        NSHealthShareUsageDescription: Lee tu pulso durante la sesión.
+        NSHealthUpdateUsageDescription: Guarda tus sesiones de fuerza en Salud.
+        # Rutina que descarga el reloj. Cámbiala si alojas la rutina en otro lugar.
+        RoutineURL: https://raw.githubusercontent.com/dfrobledo/iWatchRoutines/HEAD/routines/actual.json
+    entitlements:
+      path: WatchApp/Supporting/iWatchRoutines.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dfrobledo.iwatchroutines
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+    scheme: {}

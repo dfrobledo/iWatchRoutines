@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  routines:
+    name: Validar rutinas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install jsonschema
+      - run: python3 scripts/validate_routines.py
+
+  routinekit:
+    name: Tests de RoutineKit
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path RoutineKit
+
+  watch-app:
+    name: Compilar app del Watch
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - run: >
+          xcodebuild build
+          -project iWatchRoutines.xcodeproj
+          -scheme iWatchRoutines
+          -destination 'generic/platform=watchOS Simulator'
+          CODE_SIGNING_ALLOWED=NO
+          -quiet
