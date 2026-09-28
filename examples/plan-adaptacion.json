@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "name": "Plan de adaptación (3 días)",
+  "defaults": {
+    "sets": 3,
+    "target": { "kind": "reps", "reps": { "min": 10, "max": 12 } },
+    "restSeconds": { "min": 60, "max": 90 }
+  },
+  "schedule": {
+    "sessionsPerWeek": 3,
+    "suggestedWeekdays": ["mon", "wed", "fri"]
+  },
+  "days": [
+    {
+      "id": "day1",
+      "name": "Tren inferior y core",
+      "focus": "Estabilidad",
+      "blocks": [
+        {
+          "type": "cardio",
+          "role": "warmup",
+          "id": "d1-warmup",
+          "name": "Bicicleta estática",
+          "activity": "indoorCycling",
+          "durationSeconds": { "min": 300, "max": 480 },
+          "intensity": "Resistencia suave"
+        },
+        {
+          "type": "exercise",
+          "id": "box-squat",
+          "name": "Sentadilla a la silla",
+          "equipment": ["silla firme o caja"],
+          "cues": ["Siéntate y levántate de la silla", "Peso en los talones"]
+        },
+        {
+          "type": "exercise",
+          "id": "leg-extension",
+          "name": "Extensión de piernas en máquina",
+          "equipment": ["máquina de extensión"],
+          "load": "ligera a moderada",
+          "tempo": { "eccentricSeconds": 3 },
+          "cues": ["Controla la bajada: 3 segundos"]
+        },
+        {
+          "type": "exercise",
+          "id": "glute-bridge-elevated",
+          "name": "Puente de glúteo con torso elevado",
+          "equipment": ["colchoneta"],
+          "cues": ["Torso ligeramente elevado, no plano", "Pies apoyados en el suelo", "Eleva la cadera apretando los glúteos"]
+        },
+        {
+          "type": "exercise",
+          "id": "russian-twist-fitball",
+          "name": "Giro ruso con fitball",
+          "equipment": ["fitball"],
+          "cues": ["En el suelo o en un banco", "Gira el balón de lado a lado", "Abdomen firme"]
+        }
+      ]
+    },
+    {
+      "id": "day2",
+      "name": "Tren superior",
+      "focus": "Espalda y pecho",
+      "blocks": [
+        {
+          "type": "cardio",
+          "role": "warmup",
+          "id": "d2-warmup",
+          "name": "Elíptica",
+          "activity": "elliptical",
+          "durationSeconds": { "min": 300, "max": 480 },
+          "intensity": "Paso suave"
+        },
+        {
+          "type": "exercise",
+          "id": "lat-pulldown",
+          "name": "Jalón al pecho en polea alta",
+          "equipment": ["polea alta"],
+          "cues": ["Espalda erguida", "Lleva el agarre a la parte alta del pecho"]
+        },
+        {
+          "type": "exercise",
+          "id": "machine-chest-press",
+          "name": "Presión de pecho en máquina",
+          "equipment": ["multifuncional o cabina"],
+          "cues": ["Hombros abajo, lejos de las orejas"]
+        },
+        {
+          "type": "exercise",
+          "id": "seated-cable-row",
+          "name": "Remo sentado en polea baja",
+          "equipment": ["polea baja"],
+          "cues": ["Espalda recta", "Lleva el agarre hacia el ombligo"],
+          "alternatives": [
+            {
+              "id": "fitball-supported-db-row",
+              "name": "Remo bilateral apoyado en fitball",
+              "equipment": ["fitball", "mancuernas ligeras"],
+              "cues": [
+                "Pecho apoyado sobre el balón",
+                "Una mancuerna en cada mano",
+                "Codos hacia atrás y arriba, hacia la cintura"
+              ]
+            },
+            {
+              "id": "standing-cable-row",
+              "name": "Remo de pie en polea baja",
+              "equipment": ["polea baja de la multifuncional"],
+              "cues": [
+                "De pie, rodillas ligeramente flexionadas",
+                "Abdomen firme",
+                "Hala hacia el ombligo con codos pegados",
+                "Lleva los hombros hacia atrás"
+              ]
+            },
+            {
+              "id": "bench-single-arm-db-row",
+              "name": "Remo a una mano apoyado en banco",
+              "equipment": ["banco o silla firme", "mancuerna"],
+              "perSide": true,
+              "cues": [
+                "Mano y rodilla del mismo lado sobre el banco",
+                "Hala hacia la cadera subiendo el codo",
+                "Luego cambia de lado"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "id": "seated-db-shoulder-press",
+          "name": "Press de hombros con mancuernas",
+          "equipment": ["banco con respaldo", "mancuernas ligeras"],
+          "load": "ligera",
+          "cues": ["Sentado con respaldo erguido", "Empuja hacia arriba sin bloquear los codos"]
+        }
+      ]
+    },
+    {
+      "id": "day3",
+      "name": "Cuerpo completo",
+      "blocks": [
+        {
+          "type": "cardio",
+          "role": "warmup",
+          "id": "d3-warmup",
+          "name": "Caminata en banda",
+          "activity": "treadmillWalk",
+          "durationSeconds": { "min": 300, "max": 480 },
+          "intensity": "Sin inclinación, ritmo moderado"
+        },
+        {
+          "type": "exercise",
+          "id": "leg-press",
+          "name": "Prensa de piernas",
+          "equipment": ["multifuncional con prensa"],
+          "alternatives": [
+            {
+              "id": "cable-hip-hinge",
+              "name": "Polea baja con agarre a caderas",
+              "equipment": ["polea baja"]
+            },
+            {
+              "id": "db-romanian-deadlift",
+              "name": "Peso muerto rumano con mancuernas",
+              "when": "Si no hay prensa",
+              "equipment": ["mancuernas ligeras"],
+              "load": "ligera",
+              "cues": ["Rodillas suavemente flexionadas", "Lleva la cadera hacia atrás"]
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "id": "single-arm-db-row",
+          "name": "Remo unilateral con mancuerna",
+          "equipment": ["banco estable", "mancuerna"],
+          "perSide": true,
+          "cues": ["Apoya una mano y una rodilla en el banco"]
+        },
+        {
+          "type": "exercise",
+          "id": "pec-deck",
+          "name": "Aperturas de pecho en máquina",
+          "equipment": ["pec deck o cabina"],
+          "cues": ["Aísla el pectoral sin cargar la espalda"]
+        },
+        {
+          "type": "exercise",
+          "id": "incline-plank",
+          "name": "Plancha frontal inclinada",
+          "equipment": ["banco o multifuncional"],
+          "target": { "kind": "time", "seconds": null },
+          "cues": ["Antebrazos sobre el banco, no en el suelo"]
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "phases": [
+      {
+        "name": "Adaptación",
+        "fromWeek": 1,
+        "toWeek": 6,
+        "keepExercises": true,
+        "notes": ["Técnica perfecta", "Peso liviano que permita terminar las repeticiones sin molestias"]
+      },
+      {
+        "name": "Ajuste y variación",
+        "fromWeek": 6,
+        "toWeek": null,
+        "keepExercises": false,
+        "notes": [
+          "Reevaluar la rutina (semana 6 a 8)",
+          "Variantes más desafiantes",
+          "Posible subida a 4 series en algunos ejercicios",
+          "Variedad para evitar estancamiento"
+        ]
+      }
+    ],
+    "rule": {
+      "kind": "doubleProgression",
+      "fromWeek": 3,
+      "condition": "La última repetición sale con buena postura"
+    },
+    "reviewAfterWeeks": 4
+  },
+  "safetyReminders": [
+    { "when": "duringSession", "text": "Sin saltos ni impactos; evita flexionar mucho las rodillas" },
+    { "when": "duringSession", "text": "No bajes la cabeza por debajo del pecho" },
+    { "when": "afterSession", "text": "No te acuestes completamente plano justo después de entrenar" }
+  ],
+  "openQuestions": [
+    {
+      "id": "q-plank-duration",
+      "refersTo": "incline-plank",
+      "question": "El plan no dice cuánto dura la plancha. ¿Cuántos segundos por serie?",
+      "suggestedAnswer": "20–30 segundos"
+    },
+    {
+      "id": "q-russian-twist-count",
+      "refersTo": "russian-twist-fitball",
+      "question": "¿Las 10–12 repeticiones del giro ruso son en total o por lado?",
+      "suggestedAnswer": "Por lado"
+    },
+    {
+      "id": "q-cable-hip-hinge",
+      "refersTo": "cable-hip-hinge",
+      "question": "¿Qué movimiento es exactamente \"polea baja con agarre a caderas\"? ¿Un pull-through de cadera?"
+    },
+    {
+      "id": "q-starting-loads",
+      "refersTo": "*",
+      "question": "El plan no indica pesos. ¿Se registran durante la primera sesión?",
+      "suggestedAnswer": "Sí: el Watch pide el peso en la primera serie de cada ejercicio y lo recuerda"
+    }
+  ]
+}

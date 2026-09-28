@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dfrobledo/iWatchRoutines/schema/routine.schema.json",
+  "title": "Rutina de entrenamiento estructurada",
+  "description": "Formato intermedio entre la rutina en prosa y el reproductor del Apple Watch. Los ejercicios heredan series, repeticiones y descanso de `defaults` salvo que los sobrescriban.",
+  "type": "object",
+  "required": ["schemaVersion", "name", "defaults", "days"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "name": { "type": "string" },
+    "defaults": {
+      "type": "object",
+      "required": ["sets", "target", "restSeconds"],
+      "additionalProperties": false,
+      "properties": {
+        "sets": { "type": "integer", "minimum": 1 },
+        "target": { "$ref": "#/$defs/target" },
+        "restSeconds": { "$ref": "#/$defs/range" }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sessionsPerWeek": { "type": "integer", "minimum": 1, "maximum": 7 },
+        "suggestedWeekdays": {
+          "type": "array",
+          "items": { "enum": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] },
+          "uniqueItems": true
+        }
+      }
+    },
+    "days": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/day" }
+    },
+    "progression": { "$ref": "#/$defs/progression" },
+    "safetyReminders": {
+      "description": "Recordatorios que el Watch muestra en momentos concretos de la sesión.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["when", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "when": { "enum": ["beforeSession", "duringSession", "afterSession"] },
+          "text": { "type": "string" }
+        }
+      }
+    },
+    "openQuestions": {
+      "description": "Dudas que el intérprete no pudo resolver con el texto. El iPhone las pregunta antes de enviar la rutina al Watch.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "refersTo", "question"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "refersTo": { "type": "string", "description": "id del ejercicio o bloque afectado" },
+          "question": { "type": "string" },
+          "suggestedAnswer": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "range": {
+      "description": "Valor fijo cuando min == max.",
+      "type": "object",
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "integer", "minimum": 0 },
+        "max": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "reps"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "reps" },
+            "reps": { "$ref": "#/$defs/range" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "seconds"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "time" },
+            "seconds": {
+              "description": "null si el texto no lo especifica (ver openQuestions).",
+              "oneOf": [{ "$ref": "#/$defs/range" }, { "type": "null" }]
+            }
+          }
+        }
+      ]
+    },
+    "day": {
+      "type": "object",
+      "required": ["id", "name", "blocks"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "focus": { "type": "string" },
+        "blocks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [{ "$ref": "#/$defs/cardioBlock" }, { "$ref": "#/$defs/exerciseBlock" }]
+          }
+        }
+      }
+    },
+    "cardioBlock": {
+      "type": "object",
+      "required": ["type", "id", "name", "activity", "durationSeconds"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "cardio" },
+        "role": { "enum": ["warmup", "cooldown", "main"] },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "activity": {
+          "description": "Se mapea a HKWorkoutActivityType (cycling, elliptical, walking) en interior.",
+          "enum": ["indoorCycling", "elliptical", "treadmillWalk"]
+        },
+        "durationSeconds": { "$ref": "#/$defs/range" },
+        "intensity": { "type": "string" },
+        "cues": { "$ref": "#/$defs/cues" }
+      }
+    },
+    "exerciseFields": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "equipment": { "type": "array", "items": { "type": "string" } },
+        "sets": { "type": "integer", "minimum": 1 },
+        "target": { "$ref": "#/$defs/target" },
+        "restSeconds": { "$ref": "#/$defs/range" },
+        "perSide": { "type": "boolean", "description": "Unilateral: cada serie se hace con un lado y luego con el otro." },
+        "tempo": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "eccentricSeconds": { "type": "integer", "minimum": 0 },
+            "concentricSeconds": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "load": { "type": "string", "description": "Indicación cualitativa de carga (\"ligera\", \"ligera a moderada\")." },
+        "cues": { "$ref": "#/$defs/cues" }
+      }
+    },
+    "exerciseBlock": {
+      "type": "object",
+      "required": ["type", "id", "name"],
+      "unevaluatedProperties": false,
+      "allOf": [{ "$ref": "#/$defs/exerciseFields" }],
+      "properties": {
+        "type": { "const": "exercise" },
+        "alternatives": {
+          "description": "Sustitutos válidos (máquina ocupada, equipo no disponible).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "unevaluatedProperties": false,
+            "allOf": [{ "$ref": "#/$defs/exerciseFields" }],
+            "properties": {
+              "when": { "type": "string", "description": "Condición en la que se usa esta alternativa." }
+            }
+          }
+        }
+      }
+    },
+    "cues": {
+      "description": "Indicaciones técnicas cortas para mostrar o leer en voz alta.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "progression": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "fromWeek"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "fromWeek": { "type": "integer", "minimum": 1 },
+              "toWeek": { "type": ["integer", "null"] },
+              "keepExercises": { "type": "boolean" },
+              "notes": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "rule": {
+          "description": "Doble progresión: subir repeticiones hasta el máximo del rango y después subir el peso.",
+          "type": "object",
+          "required": ["kind", "fromWeek"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "doubleProgression" },
+            "fromWeek": { "type": "integer", "minimum": 1 },
+            "condition": { "type": "string" }
+          }
+        },
+        "reviewAfterWeeks": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}
